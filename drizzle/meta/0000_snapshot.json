@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "babd9d98-cbdd-4a1e-a879-cf0118b4d28f",
+  "id": "20597d17-0658-4ceb-ae13-a84f8293439d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "users_table": {
@@ -39,9 +39,7 @@
       "indexes": {
         "users_table_email_unique": {
           "name": "users_table_email_unique",
-          "columns": [
-            "email"
-          ],
+          "columns": ["email"],
           "isUnique": true
         }
       },
