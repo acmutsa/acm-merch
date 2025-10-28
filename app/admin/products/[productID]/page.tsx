@@ -1,7 +1,12 @@
-export default function Page(){
+interface productPageProps{
+    params:{
+        productID:string,
+    }
+}
+export default function Page({ params } : productPageProps){
     return (
         <div>
-            HI
+            productID:{params.productID}
         </div>
     )
 }

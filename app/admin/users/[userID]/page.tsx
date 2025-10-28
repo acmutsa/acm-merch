@@ -1,7 +1,12 @@
-export default function Page(){
+interface usersPageProps{
+    params:{
+        userID:string,
+    }
+}
+export default function Page({ params }: usersPageProps){
     return (
-        <div>
-            HI
-        </div>
+        <>
+            <div>userID: {params.userID}</div>
+        </>
     )
 }

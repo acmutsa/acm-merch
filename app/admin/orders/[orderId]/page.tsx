@@ -1,7 +1,13 @@
-export default function Page(){
+interface orderPageProps{
+    params:{
+        orderID:string,
+    }
+}
+
+export default function Page({ params }: orderPageProps){
     return (
         <div>
-            HI
+            orderID:{params.orderID}
         </div>
     )
 }
