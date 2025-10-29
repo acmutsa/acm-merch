@@ -7,7 +7,7 @@ export default async function Page({
 
   return (
     <div>
-      <h1>{productId}</h1>
+      <h1>Create {productId}</h1>
     </div>
   );
 }
