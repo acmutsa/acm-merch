@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -38,6 +37,9 @@ export default function Navbar() {
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link href="/collections">Collections</Link>
               </NavigationMenuLink> 
+              <NavigationMenuList>
+                <Link href="/cart">🛒 </Link>
+              </NavigationMenuList>
           </NavigationMenuList>
         </NavigationMenu>
       </div>
