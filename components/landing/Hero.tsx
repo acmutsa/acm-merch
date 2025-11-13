@@ -12,7 +12,7 @@ export default function Hero({ params }: heroPageProps) {
       style={{
         backgroundImage: `url(${params.image})`,
       }}>
-        <h1 className="text-white text-4xl font-bold">
+        <h1 className="text-white text-5xl font-bold">
          {params.text}
         </h1>
       </div>

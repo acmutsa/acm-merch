@@ -7,28 +7,29 @@ interface CollectionContainerProps {
 
 export default function CollectionContainer({title,images }: CollectionContainerProps){
     return (
-<div className="flex flex-row items-center gap-6 p-4 m-4 justify-center">
+<div className="flex  items-center gap-8 py-6 m-4 justify-center">
 
-      {/* Title no forced width */}
-      <h1 className="text-3xl font-bold text-blue-500 text-center">
+
+      <h1 className="text-5xl font-bold text-blue-500  flex-none">
         {title}
       </h1>
 
-      {/* Grid that actually stays in one row */}
-      <div className="grid grid-cols-4 gap-2">
-        {images.slice(0, 4).map((image, i) => (
-          <div
-            key={i}
-            className="relative w-[120px] aspect-square overflow-hidden rounded-md border-2 border-blue-500"
-          >
-            <Image
-              src={image}
-              alt={`${title} preview ${i}`}
-              fill
-              className="object-cover"
-            />
-          </div>
-        ))}
+      <div className="flex-grow flex justify-end">
+        <div className="grid grid-cols-4 gap-3">
+          {images.slice(0, 4).map((image, i) => (
+            <div
+              key={i}
+              className="relative w-[200px] aspect-square overflow-hidden rounded-md border-2 border-blue-500 transition-transform duration-200 hover:scale-105"
+            >
+              <Image
+                src={image}
+                alt={`${title} preview ${i}`}
+                fill
+                className="object-cover"
+              />
+            </div>
+          ))}
+        </div>
       </div>
 
     </div>

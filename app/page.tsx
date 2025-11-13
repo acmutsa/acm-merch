@@ -9,7 +9,7 @@ export default async function Home() {
   return (
     <>
       <Hero params={{ text: "Welcome To The ACM Merch Store" ,image:"/assets/globe.jpeg"}} />
-      <div className="flex flex-col items-center justify-center gap-12 py-12">
+      <div className="flex flex-col  justify-center gap-12 p-12">
         <CollectionContainer
             title="RowdyHacks"
             images={[
@@ -20,7 +20,7 @@ export default async function Home() {
             ]}
           />
           <CollectionContainer
-            title="Datathon"
+            title="Rowdy Datathon"
             images={[
               "/assets/logo.png",
               "/assets/logo.png",
