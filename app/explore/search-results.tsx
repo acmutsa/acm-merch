@@ -10,10 +10,10 @@ export default async function SearchResults({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {products.map((product) => (
-        <div key={product.productId}>
-          <h2>{product.title}</h2>
-          <p>{product.sizes.join(", ")}</p>
-          <img src={product.mockupUrl} alt={product.title} />
+        <div key={product.id}>
+          <h2>{product.name}</h2>
+          <p>{product.variants} variants</p>
+          <img src={product.thumbnailUrl} alt={product.name} />
         </div>
       ))}
     </div>

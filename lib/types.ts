@@ -1,6 +1,8 @@
 type Product = {
-  productId: string;
-  title: string;
-  sizes: string[];
-  mockupUrl: string;
+  id: number;
+  externalId: string;
+  name: string;
+  variants: number;
+  thumbnailUrl: string;
+  isIgnored: boolean;
 };
