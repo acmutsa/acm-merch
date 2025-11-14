@@ -1,20 +1,41 @@
-import { getProducts } from "@/lib/prinful";
+import { getProducts, getCatalogInfoFromStoreProduct } from "@/lib/prinful";
+import CatalogDisplay from "@/components/ui/catalog"; // make sure this is a component
 
 export default async function CreateProductPage() {
   const products = await getProducts();
-  console.log(products);
+
+  // Fetch all catalog info BEFORE rendering
+  const catalogList = await Promise.all(
+    products.map(async (product: any) => {
+      const {
+        catalog,
+        storeProduct,
+        storeVariants,
+      } = await getCatalogInfoFromStoreProduct(product.id);
+
+      return {
+        product,
+        catalog,
+        storeProduct,
+        storeVariants,
+      };
+    })
+  );
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">All Products</h1>
-      <ul className="space-y-2">
-        {products.map((product: { id: number; name: string }) => (
+    <div>
+      <ul className="space-y-8">
+        {catalogList.map(({ product, catalog, storeProduct, storeVariants }) => (
           <li key={product.id}>
-            {product.name}
+            <h2 className="text-2xl font-bold">{product.name}</h2>
+            <CatalogDisplay
+              storeProduct={storeProduct || product}
+              storeVariants={storeVariants || []}
+              catalog={catalog}
+            />
           </li>
         ))}
       </ul>
-      {/* rest of your create-form UI */}
     </div>
   );
 }
