@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import { Trash2 } from 'lucide-react'; 
-import Link from 'next/link';
 
 export default function Page() {
     //many things to rip out this data and its functions exists just for PoC
@@ -11,6 +10,14 @@ export default function Page() {
     { id: 3, productName: "CQ Beanie", price: 24.99, size: "O/S", thumbnailURL: "/assets/logo.png", count: 1 },
     { id: 4, productName: "Projects Backpack", price: 39.99, size: "O/S", thumbnailURL: "/assets/logo.png", count: 2 },
   ]);
+   async function handleCheckout() {
+    const res = await fetch("/api/checkout", {
+      method: "POST"
+    });
+
+    const data = await res.json();
+    window.location.href = data.url;
+  }
 
   const increaseQty = (id: number) => {
     setCartItems(prev =>
@@ -100,11 +107,11 @@ export default function Page() {
         {cartItems.length > 0 && (
           <div className="mt-8 flex items-center justify-between gap-4">
             <p className="text-2xl font-bold">Total: ${total}</p>
-            <Link href="/checkout">
-                <button className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 font-semibold transition text-xl">
+            
+                <button className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 font-semibold transition text-xl" onClick={handleCheckout}>
                 Check Out
                 </button>
-            </Link>
+
           </div>
         )}
       </div>
