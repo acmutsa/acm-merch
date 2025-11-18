@@ -13,11 +13,11 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { debounce, parseAsString, useQueryState } from "nuqs";
+import { debounce, parseAsInteger, parseAsString, useQueryState } from "nuqs";
+import { Input } from "@/components/ui/input";
 
 export default function SearchSidebar() {
   const [sortBy, setSortBy] = useQueryState(
@@ -34,24 +34,37 @@ export default function SearchSidebar() {
       shallow: false,
     })
   );
-
+  const [minPrice, setMinPrice] = useQueryState(
+    "minPrice",
+    parseAsInteger.withOptions({
+      history: "replace",
+      shallow: false,
+    })
+  );
+  const [maxPrice, setMaxPrice] = useQueryState(
+    "maxPrice",
+    parseAsInteger.withOptions({
+      history: "replace",
+      shallow: false,
+    })
+  );
   const handleSortByChange = (value: string) => {
     setSortBy(value, {
       // limitUrlUpdates: value === "" ? undefined : debounce(500),
     });
   };
   return (
-    <Sidebar collapsible="none" className="h-full">
+    <Sidebar collapsible="none" className="h-full w-md">
       <SidebarContent>
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel>Sort By</SidebarGroupLabel>
-            <SidebarGroupContent>
+            <SidebarGroupContent className="w-full">
               <Select
                 value={sortBy || "alphabetical"}
                 onValueChange={handleSortByChange}
               >
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger>
                   <SelectValue placeholder="Sort By" />
                 </SelectTrigger>
                 <SelectContent>
@@ -63,6 +76,51 @@ export default function SearchSidebar() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
+            </SidebarGroupContent>
+          </SidebarGroup>
+          <SidebarGroup>
+            <SidebarGroupLabel>Filters</SidebarGroupLabel>
+            <SidebarGroupContent className="w-full">
+              <div className="flex flex-col gap-2">
+                <SidebarGroupLabel className="text-xs">Price</SidebarGroupLabel>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="number"
+                    placeholder="Min"
+                    alt="Min Price"
+                    value={minPrice || ""}
+                    onChange={(e) =>
+                      setMinPrice(
+                        Number(e.target.value) < (maxPrice || Infinity)
+                          ? Number(e.target.value)
+                          : maxPrice || Infinity,
+                        {
+                          limitUrlUpdates:
+                            e.target.value === "" ? undefined : debounce(100),
+                        }
+                      )
+                    }
+                  />
+                  <span className="text-sm"> - </span>
+                  <Input
+                    type="number"
+                    placeholder="Max"
+                    alt="Max Price"
+                    value={maxPrice || ""}
+                    onChange={(e) =>
+                      setMaxPrice(
+                        Number(e.target.value) > (minPrice || 0)
+                          ? Number(e.target.value)
+                          : minPrice || 0,
+                        {
+                          limitUrlUpdates:
+                            e.target.value === "" ? undefined : debounce(100),
+                        }
+                      )
+                    }
+                  />
+                </div>
+              </div>
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>

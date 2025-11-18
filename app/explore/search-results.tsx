@@ -10,8 +10,8 @@ export default async function SearchResults({
 }: {
   params: SearchParams;
 }) {
-  const { search, filterBy, filterValue, sortBy } = await params;
-  const syncProducts = await getProducts(search);
+  const sortAndFilterParams = await params;
+  const syncProducts = await getProducts(sortAndFilterParams.search);
 
   const products = await Promise.all(
     syncProducts.map(async (syncProduct) => {
@@ -22,9 +22,7 @@ export default async function SearchResults({
 
   const filteredSortedProducts = filterAndSortProducts(
     products,
-    filterBy as FilterBy,
-    filterValue as string,
-    sortBy as SortBy
+    sortAndFilterParams
   );
 
   return (

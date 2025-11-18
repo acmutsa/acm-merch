@@ -1,4 +1,4 @@
-import { parseAsString, createLoader } from "nuqs/server";
+import { parseAsString, createLoader, parseAsInteger } from "nuqs/server";
 
 export const searchParams = {
   search: parseAsString.withDefault("").withOptions({
@@ -11,6 +11,12 @@ export const searchParams = {
     history: "replace",
   }),
   filterValue: parseAsString.withDefault("").withOptions({
+    history: "replace",
+  }),
+  minPrice: parseAsInteger.withDefault(-Infinity).withOptions({
+    history: "replace",
+  }),
+  maxPrice: parseAsInteger.withDefault(Infinity).withOptions({
     history: "replace",
   }),
 };

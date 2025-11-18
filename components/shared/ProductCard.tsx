@@ -28,7 +28,7 @@ export default async function ProductCard({ product }: { product: Product }) {
           />
         </CardContent>
         <CardFooter className="block gap-2">
-          <CardTitle>{product.syncProduct.name}</CardTitle>
+          <CardTitle className="">{product.syncProduct.name}</CardTitle>
           <div className="flex items-center justify-between gap-0.5">
             <p>${product.syncVariants[0].retail_price}</p>
             <p className="text-sm text-gray-500">
