@@ -11,7 +11,7 @@ export type CartItem = {
 };
 
 export function getCartFromCookie(): CartItem[] {
-    const raw = cookies.().get(CART_COOKIE)?.value;
+    const raw = cookies().get(CART_COOKIE)?.value;
 
     if(!raw) {
         return [];

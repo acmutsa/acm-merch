@@ -18,6 +18,29 @@ export default function Product({ product }: { product: ProductType }) {
   // Basic placeholder shirt colors
   const colors = ["Blue", "Black", "White"];
 
+  async function handleAddToCart() {
+    const res = await fetch("/api/cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: product.id,
+        productName: product.name,
+        price: product.price,
+        size: selectedSize,
+        quantity: 1,
+      }),
+    });
+
+    if(!res.ok) {
+      alert("Failed to add to cart");
+      return;
+    }
+
+    alert("Added to cart!");
+  }
+
   return (
     <div className="min-h-screen bg-white text-slate-900 flex flex-col">
       <main className="max-w-6xl mx-auto w-full flex flex-col md:flex-row items-center md:items-start justify-center gap-16 py-16 px-4 md:px-8">
@@ -99,13 +122,7 @@ export default function Product({ product }: { product: ProductType }) {
           {/* ADD TO CART */}
           <button
             disabled={!selectedSize}
-            onClick={() =>
-              console.log("Added to cart:", {
-                id: product.id,
-                color: selectedColor,
-                size: selectedSize,
-              })
-            }
+            onClick={handleAddToCart}
             className={`mt-4 w-full md:w-64 py-3.5 rounded-full text-lg font-semibold shadow-md transition ${
               selectedSize
                 ? "bg-[#266ae8] text-white hover:bg-[#2057bb]"

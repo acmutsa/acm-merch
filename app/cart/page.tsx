@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect,useState } from 'react';
 import { Trash2 } from 'lucide-react'; 
 import Link from 'next/link';
 
@@ -34,8 +34,32 @@ export default function Page() {
 
   const total = cartItems.reduce((sum, item) => sum + item.price * item.count, 0).toFixed(2);
 
+  const [cookies, setCookies] = useState("");
+
+  useEffect(() => {
+    const all = document.cookie;
+    console.log("document.cookie:", all);
+  
+    const cartCookie = all
+      .split("; ")
+      .find((row) => row.startsWith("cart="));
+  
+    if (cartCookie) {
+      const value = decodeURIComponent(cartCookie.split("=")[1]);
+      setCookies(value);
+    } else {
+      setCookies("No cart cookie found");
+    }
+  }, []);
+  
   return (
     <>
+
+      <div>
+        <h1>Cookies</h1>
+        <pre>{cookies}</pre>
+      </div>
+
       <div className="flex flex-col max-w-3xl mx-auto mt-12 mb-20 px-6 py-12 rounded-xl border shadow-sm bg-white">
         <h1 className="text-4xl font-bold text-gray-800 mb-6">Cart</h1>
 

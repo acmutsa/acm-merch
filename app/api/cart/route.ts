@@ -19,9 +19,10 @@ export async function POST(req:Request) {
 
     if (index >= 0) {
         const existing = cart[index];
+        const newQty = existing.quantity + qty;
         const updated: CartItem = {
             ...existing,
-            quantity: existing.quantity + qty;
+            quantity: newQty,
         };
         cart[index] = updated;
     } else {
