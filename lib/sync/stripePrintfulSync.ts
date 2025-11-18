@@ -5,7 +5,7 @@ import { db } from "@/db";
 import { eq } from "drizzle-orm";
 
     export async function syncVariantToStripe(input: unknown) {
-            const{ printfulProductId, printfulVariantId, retailPrice} = ProductSyncSchema.parse(input)
+            const{ printfulProductId, printfulVariantId, retailPrice, name} = ProductSyncSchema.parse(input)
 
             const existing = await db.query.productMappings.findFirst({
                 where: eq(productMappings.printfulVariantID,printfulVariantId)
@@ -14,7 +14,7 @@ import { eq } from "drizzle-orm";
                 return existing.stripePriceID;
             }         
             const product = await stripe.products.create({
-                name:`Printful Variant ${printfulVariantId}`,
+                name,
                 metadata:{
                     printfulProductId,
                     printfulVariantId,
@@ -29,6 +29,7 @@ import { eq } from "drizzle-orm";
             });
 
               await db.insert(productMappings).values({
+                name,
                 printfulProductID: printfulProductId,
                 printfulVariantID: printfulVariantId,
                 stripeProdID: product.id,

@@ -1,58 +1,41 @@
-import { stripe } from "@/lib/stripe";
 import { NextResponse } from "next/server";
+import { stripe } from "@/lib/stripe";
 import { syncVariantToStripe } from "@/lib/sync/stripePrintfulSync";
-
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-
-    // Your cart items, something like:
-    const items = body.items;  
-    // items = [{ variantId, quantity }]
-
-    // Build Stripe line_items dynamically
-    const lineItems = [];
+    const { items } = await req.json();
+    const line_items = [];
 
     for (const item of items) {
-      // Fetch Printful variant info
-      const variant = await fetchPrintfulVariant(item.variantId);
-
-      // Sync variant to Stripe
       const stripePriceID = await syncVariantToStripe({
-        printfulProductId: variant.product_id,
-        printfulVariantId: variant.id,
-        retailPrice: variant.retail_price
+        printfulProductId: String(item.printfulProductId),
+        printfulVariantId: String(item.printfulVariantId),
+        retailPrice: String(item.retailPrice),
+        name: String(item.name)
       });
 
-      lineItems.push({
+      line_items.push({
         price: stripePriceID,
-        quantity: item.quantity
+        quantity: item.quantity,
       });
     }
+    console.log("LINE ITEMS SENT TO STRIPE:", JSON.stringify(line_items, null, 2));
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      shipping_address_collection: {
-        allowed_countries: ["US"]
-      },
-      automatic_tax: {
-        enabled: true
-      },
-      phone_number_collection: {
-        enabled: true
-      },
       mode: "payment",
+      payment_method_types: ["card"],
+      line_items,
+      shipping_address_collection: { allowed_countries: ["US"] },
+      automatic_tax: { enabled: true },
+      phone_number_collection: { enabled: true },
       success_url: "http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: "http://localhost:3000/cart",
-      line_items: lineItems
+      cancel_url: "http://localhost:3000/cart"
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Checkout session error" },
-      { status: 500 }
-    );
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ error: "Checkout session error" }, { status: 500 });
   }
 }
+

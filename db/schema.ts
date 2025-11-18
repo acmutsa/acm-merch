@@ -3,6 +3,7 @@ import { sql } from "drizzle-orm";
 
 export const productMappings = sqliteTable("product_mappings",{
     id: integer("id").primaryKey({ autoIncrement: true }),
+    name: text("name").notNull().default("Unknown Product"),
     printfulProductID: text("printful_product_id").notNull(),
     printfulVariantID: text("printful_variant_id").notNull(),
     

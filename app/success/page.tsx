@@ -6,7 +6,18 @@ export default async function SuccessPage({
   searchParams: { session_id?: string };
 }) {
   const sessionId = searchParams.session_id;
-
+        const dummyCart = [
+        {
+            productId: 1111,      // temporary fake Printful product
+            variantId: 2222,      // temporary fake variant
+            quantity: 1
+        },
+        {
+            productId: 3333,
+            variantId: 4444,
+            quantity: 2
+        }
+        ];
   if (!sessionId) return <div>No session ID provided</div>;
 
   const session = await stripe.checkout.sessions.retrieve(sessionId, {
