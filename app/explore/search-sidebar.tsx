@@ -27,9 +27,17 @@ export default function SearchSidebar() {
       shallow: false,
     })
   );
+  const [filterBy, setFilterBy] = useQueryState(
+    "filterBy",
+    parseAsString.withOptions({
+      history: "replace",
+      shallow: false,
+    })
+  );
+
   const handleSortByChange = (value: string) => {
     setSortBy(value, {
-      limitUrlUpdates: value === "" ? undefined : debounce(500),
+      // limitUrlUpdates: value === "" ? undefined : debounce(500),
     });
   };
   return (
@@ -40,12 +48,7 @@ export default function SearchSidebar() {
             <SidebarGroupLabel>Sort By</SidebarGroupLabel>
             <SidebarGroupContent>
               <Select
-                onOpenChange={(open) => {
-                  if (!open) {
-                    setSortBy(null);
-                  }
-                }}
-                value={sortBy || ""}
+                value={sortBy || "alphabetical"}
                 onValueChange={handleSortByChange}
               >
                 <SelectTrigger className="w-[180px]">
@@ -55,8 +58,8 @@ export default function SearchSidebar() {
                   <SelectGroup>
                     <SelectItem value="lowestPrice">Lowest Price</SelectItem>
                     <SelectItem value="highestPrice">Highest Price</SelectItem>
-                    <SelectItem value="newest">Newest</SelectItem>
-                    <SelectItem value="oldest">Oldest</SelectItem>
+                    <SelectItem value="alphabeticalAsc">A-Z</SelectItem>
+                    <SelectItem value="alphabeticalDesc">Z-A</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
