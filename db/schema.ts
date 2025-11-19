@@ -26,7 +26,7 @@ export const orders = sqliteTable("order_table",{
   id: integer("id").primaryKey({ autoIncrement: true }),
   orderID: text("order_id").notNull(),
   userId:  text("account_id").notNull(),
-  cart: blob({ mode: 'json'}).$type<object>().notNull(),
+  cart: blob({ mode: 'json'}).$type<any>().notNull(),
   createdAt: text("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
