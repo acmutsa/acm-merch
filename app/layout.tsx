@@ -10,8 +10,8 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ACM Merch",
-  description: "ACM Merch Store",
+  title: "ACM Merch Store",
+  description: "The Print On Demand e-store for UTSA's largest student ran tech organization.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
