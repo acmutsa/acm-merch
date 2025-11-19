@@ -1,5 +1,5 @@
 import { getProducts } from "@/lib/queries/products";
-import { loadSearchParams } from "./searchParams";
+import { loadSearchParams } from "./search-params";
 import type { SearchParams } from "nuqs/server";
 import Search from "./search";
 import SearchResults from "./search-results";
