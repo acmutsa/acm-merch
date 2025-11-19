@@ -12,14 +12,18 @@ export function filterAndSortProducts(
   params: Awaited<SearchParams>
 ) {
   let filteredProducts = products;
-  filteredProducts = products.filter((product) => {
-    return (
-      Number(product.syncVariants[0].retail_price.replace("$", "")) <=
-        params.maxPrice &&
-      Number(product.syncVariants[0].retail_price.replace("$", "")) >=
-        params.minPrice
-    );
-  });
+  if (params.minPrice && params.maxPrice && params.minPrice > params.maxPrice) {
+    return [];
+  } else {
+    filteredProducts = products.filter((product) => {
+      return (
+        Number(product.syncVariants[0].retail_price.replace("$", "")) <=
+          Number(params.maxPrice) &&
+        Number(product.syncVariants[0].retail_price.replace("$", "")) >=
+          Number(params.minPrice)
+      );
+    });
+  }
   let sortedProducts = filteredProducts;
   if (params.sortBy === "alphabeticalAsc") {
     sortedProducts = filteredProducts.sort((a, b) => {

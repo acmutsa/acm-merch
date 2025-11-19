@@ -88,15 +88,17 @@ export default function SearchSidebar() {
                     type="number"
                     placeholder="Min"
                     alt="Min Price"
-                    value={minPrice || ""}
-                    onChange={(e) =>
-                      setMinPrice(
-                        Number(e.target.value) < (maxPrice || Infinity)
-                          ? Number(e.target.value)
-                          : maxPrice || Infinity,
+                    value={minPrice || -Infinity}
+                    onChange={async (e) =>
+                      await setMinPrice(
+                        (e.target as HTMLInputElement).value.length > 0
+                          ? Number((e.target as HTMLInputElement).value)
+                          : -Infinity,
                         {
                           limitUrlUpdates:
-                            e.target.value === "" ? undefined : debounce(100),
+                            (e.target as HTMLInputElement).value.length === 0
+                              ? undefined
+                              : debounce(100),
                         }
                       )
                     }
@@ -106,21 +108,28 @@ export default function SearchSidebar() {
                     type="number"
                     placeholder="Max"
                     alt="Max Price"
-                    value={maxPrice || ""}
-                    onChange={(e) =>
-                      setMaxPrice(
-                        Number(e.target.value) > (minPrice || 0)
-                          ? Number(e.target.value)
-                          : minPrice || 0,
+                    value={maxPrice || Infinity}
+                    onChange={async (e) =>
+                      await setMaxPrice(
+                        (e.target as HTMLInputElement).value.length > 0
+                          ? Number((e.target as HTMLInputElement).value)
+                          : Infinity,
                         {
                           limitUrlUpdates:
-                            e.target.value === "" ? undefined : debounce(100),
+                            (e.target as HTMLInputElement).value.length === 0
+                              ? undefined
+                              : debounce(100),
                         }
                       )
                     }
                   />
                 </div>
               </div>
+              {minPrice && maxPrice && minPrice > maxPrice ? (
+                <p className="text-sm text-red-500">
+                  Min price must be less than max price
+                </p>
+              ) : null}
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
