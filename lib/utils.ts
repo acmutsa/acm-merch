@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { FilterBy, Product, SortBy, SyncVariant } from "./types";
+import { Product, SyncVariant } from "./types";
 import { SearchParams } from "@/app/explore/search-params";
 
 export function cn(...inputs: ClassValue[]) {
