@@ -36,15 +36,15 @@ export function filterAndSortProducts(
   } else if (params.sortBy === "lowestPrice") {
     sortedProducts = filteredProducts.sort((a, b) => {
       return (
-        Number(a.syncVariants[0].retail_price) -
-        Number(b.syncVariants[0].retail_price)
+        Number(a.syncVariants[0].retail_price.replace("$", "")) -
+        Number(b.syncVariants[0].retail_price.replace("$", ""))
       );
     });
   } else if (params.sortBy === "highestPrice") {
     sortedProducts = filteredProducts.sort((a, b) => {
       return (
-        Number(b.syncVariants[0].retail_price) -
-        Number(a.syncVariants[0].retail_price)
+        Number(b.syncVariants[0].retail_price.replace("$", "")) -
+        Number(a.syncVariants[0].retail_price.replace("$", ""))
       );
     });
   }
