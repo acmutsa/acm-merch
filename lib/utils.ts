@@ -11,7 +11,7 @@ export function filterAndSortProducts(
   products: Product[],
   params: Awaited<SearchParams>
 ) {
-  let filteredProducts = products;
+  let filteredProducts;
   if (params.minPrice && params.maxPrice && params.minPrice > params.maxPrice) {
     return [];
   } else {
