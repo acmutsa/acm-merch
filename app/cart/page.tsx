@@ -1,7 +1,6 @@
 'use client';
 import { useEffect,useState } from 'react';
 import { Trash2 } from 'lucide-react'; 
-import Link from 'next/link';
 
 export default function Page() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
