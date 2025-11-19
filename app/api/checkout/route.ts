@@ -1,6 +1,19 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { syncVariantToStripe } from "@/lib/sync/stripePrintfulSync";
+
+function generatePrintfulOrderId() {
+
+  const length = 9 + Math.floor(Math.random() * 3); 
+  let id = "";
+  for (let i = 0; i < length; i++) {
+    const digit = Math.floor(Math.random() * 10);
+    id += digit.toString();
+  }
+  return "ACM-" + id;
+}
+
+
 export async function POST(req: Request) {
   try {
     const { items } = await req.json();
@@ -19,12 +32,16 @@ export async function POST(req: Request) {
         quantity: item.quantity,
       });
     }
-    console.log("LINE ITEMS SENT TO STRIPE:", JSON.stringify(line_items, null, 2));
+
+    const orderId = generatePrintfulOrderId();
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
       line_items,
+      payment_intent_data: {
+        metadata: { orderId }
+      },
       shipping_address_collection: { allowed_countries: ["US"] },
       automatic_tax: { enabled: true },
       phone_number_collection: { enabled: true },
