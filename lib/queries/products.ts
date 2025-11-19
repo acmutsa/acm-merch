@@ -1,8 +1,9 @@
-const BASE_URL = "https://api.printful.com/store/products";
+import type { SyncProduct, Product, SyncVariant } from "../types";
+const BASE_URL = "https://api.printful.com";
 
-export async function getProducts(search: string): Promise<Product[]> {
+export async function getProducts(search: string): Promise<SyncProduct[]> {
   const params = new URLSearchParams();
-  const response = await fetch(`${BASE_URL}?${params}`, {
+  const response = await fetch(`${BASE_URL}/store/products?${params}`, {
     headers: {
       Authorization: `Bearer ${process.env.PRINTFUL_API_KEY}`,
     },
@@ -14,18 +15,30 @@ export async function getProducts(search: string): Promise<Product[]> {
   const data = await response.json();
   console.log(data);
 
-  const productList: Product[] = data.result?.map(
-    (product: any): Product => ({
-      id: product.id,
-      externalId: product.external_id,
-      name: product.name,
-      variants: product.variants,
-      thumbnailUrl: product.thumbnail_url,
-      isIgnored: product.is_ignored,
-    })
-  );
+  const productList: SyncProduct[] = data.result as SyncProduct[];
 
-  return productList.filter((product: Product) =>
+  return productList.filter((product: SyncProduct) =>
     product.name.toLowerCase().includes(search.toLowerCase())
   );
+}
+
+export async function getProductById(productId: number): Promise<Product> {
+  const params = new URLSearchParams();
+  const response = await fetch(
+    `${BASE_URL}/store/products/${productId}?${params}`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.PRINTFUL_API_KEY}`,
+      },
+    }
+  );
+  if (!response.ok) {
+    console.log(await response.json());
+    throw new Error(`Error fetching products: ${response.statusText}`);
+  }
+  const data = await response.json();
+  return {
+    syncProduct: data.result.sync_product as SyncProduct,
+    syncVariants: data.result.sync_variants as SyncVariant[],
+  };
 }
