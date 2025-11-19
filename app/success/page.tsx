@@ -5,27 +5,20 @@ export default async function SuccessPage({
 }: {
   searchParams: { session_id?: string };
 }) {
-  const sessionId = searchParams.session_id;
-        const dummyCart = [
-        {
-            productId: 1111,      // temporary fake Printful product
-            variantId: 2222,      // temporary fake variant
-            quantity: 1
-        },
-        {
-            productId: 3333,
-            variantId: 4444,
-            quantity: 2
-        }
-        ];
+  const sessionId =  await searchParams.session_id;
   if (!sessionId) return <div>No session ID provided</div>;
 
   const session = await stripe.checkout.sessions.retrieve(sessionId, {
     expand: ["line_items"],
   });
 
+  
   const items = session.line_items?.data ?? [];
+  const paymentIntentId = session.payment_intent as string;
 
+const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+const orderId = paymentIntent.metadata.orderId;
   return (
     <div className="min-h-screen bg-gray-50 py-20 px-4">
       <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-10">
@@ -39,7 +32,7 @@ export default async function SuccessPage({
 
         <div className="mb-6">
           <p className="text-sm text-gray-500">Order Number</p>
-          <p className="font-semibold">3795HIDBHS</p>
+          <p className="font-semibold">{orderId}</p>
         </div>
 
         <div className="border-t pt-6">

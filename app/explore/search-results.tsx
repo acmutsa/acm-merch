@@ -1,9 +1,11 @@
 import { getProductById, getProducts } from "@/lib/queries/products";
 
 import ProductCard from "@/components/shared/ProductCard";
+import Image from "next/image";
+import { Suspense } from "react";
 import { filterAndSortProducts } from "@/lib/utils";
 import type { SearchParams } from "./search-params";
-import { FilterBy, SortBy } from "@/lib/types";
+
 export default async function SearchResults({
   params,
 }: {

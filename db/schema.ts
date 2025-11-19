@@ -1,5 +1,6 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text,blob } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
+
 
 export const productMappings = sqliteTable("product_mappings",{
     id: integer("id").primaryKey({ autoIncrement: true }),
@@ -20,4 +21,16 @@ export const productMappings = sqliteTable("product_mappings",{
     .notNull()
 });
 
+// userid and a json object of the orderid and the items
+export const orders = sqliteTable("order_table",{
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  orderID: text("order_id").notNull(),
+  userId:  text("account_id").notNull(),
+  cart: blob({ mode: 'json'}).$type<any>().notNull(),
+  createdAt: text("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  totalAmount:text("total_amount").notNull(),
+
+});
 export * from "./auth-schema";
