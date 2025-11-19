@@ -28,7 +28,11 @@ export async function POST(req:Request) {
     } else {
         const newItem: CartItem = {
             id: body.id,
-            productName: body.productName,
+            printfulProductID: body.id,
+            printfulVariantID: body.id,
+            stripeProdID: body.id,
+            stripePriceID: body.id,
+            name: body.name,
             price: body.price,
             size: body.size,
             quantity: qty,

@@ -4,7 +4,11 @@ const CART_COOKIE = "cart";
 
 export type CartItem = {
     id: string;
-    productName: string;
+    printfulProductID: string;
+    printfulVariantID: string;
+    stripeProdID: string;
+    stripePriceID: number;
+    name: string;
     price: number;
     size?: string;
     quantity: number;

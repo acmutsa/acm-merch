@@ -26,7 +26,7 @@ export default function Product({ product }: { product: ProductType }) {
       },
       body: JSON.stringify({
         id: product.id,
-        productName: product.name,
+        name: product.name,
         price: product.price,
         size: selectedSize,
         quantity: 1,

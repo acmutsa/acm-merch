@@ -6,6 +6,19 @@ export default function Page() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
 
+  type CartItem = {
+    id: string;
+    printfulProductID: string;
+    printfulVariantID: string;
+    stripeProdID: string;
+    stripePriceID: number;
+    name: string;
+    price: number;
+    size?: string;
+    quantity: number;
+  };
+  
+
   useEffect(() => {
     async function loadCart() {
       try {
@@ -79,11 +92,11 @@ export default function Page() {
               <div className="flex items-center gap-4">
                 <img
                   src="/assets/logo.png"
-                  alt={item.productName}
+                  alt={item.name}
                   className="w-16 h-16 object-contain"
                 />
                 <div>
-                  <h3 className="font-semibold text-lg">{item.productName}</h3>
+                  <h3 className="font-semibold text-lg">{item.name}</h3>
                   <p className="text-sm text-gray-500">Size: {item.size}</p>
 
     
@@ -130,11 +143,9 @@ export default function Page() {
         {cartItems.length > 0 && (
           <div className="mt-8 flex items-center justify-between gap-4">
             <p className="text-2xl font-bold">Total: ${total}</p>
-            <Link href="/checkout">
-                <button className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 font-semibold transition text-xl">
+              <button className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 font-semibold transition text-xl">
                 Check Out
-                </button>
-            </Link>
+              </button>
           </div>
         )}
       </div>
