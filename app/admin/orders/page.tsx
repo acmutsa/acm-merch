@@ -1,7 +1,3 @@
-export default function Page(){
-    return (
-        <div>
-            HI
-        </div>
-    )
+export default function Page() {
+  return <div className="h-full">Orders</div>;
 }
