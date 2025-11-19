@@ -1,10 +1,10 @@
 export type SyncProduct = {
   id: number;
-  externalId: string;
+  external_id: string;
   name: string;
   variants: number;
-  thumbnailUrl: string;
-  isIgnored: boolean;
+  thumbnail_url: string;
+  is_ignored: boolean;
 };
 
 export type Product = {
@@ -14,17 +14,17 @@ export type Product = {
 
 export type SyncVariant = {
   id: number;
-  externalId: string;
-  syncProductId: number;
+  external_id: string;
+  sync_product_id: number;
   name: string;
   synced: boolean;
-  variantId: number;
-  retailPrice: string;
+  variant_id: number;
+  retail_price: string;
   currency: string;
   sku: string;
   product: {
-    variantId: number;
-    productId: number;
+    variant_id: number;
+    product_id: number;
     image: string;
     name: string;
   };
@@ -32,32 +32,40 @@ export type SyncVariant = {
     type: string;
     id: number;
     url: string;
-    options: [
-      {
-        id: string;
-        value: string;
-      }
-    ];
+    options: { id: string; value: string }[];
     hash: string;
     filename: string;
-    mimeType: string;
+    mime_type: string;
     size: number;
     width: number;
     height: number;
     dpi: number;
     status: string;
     created: number;
-    thumbnailUrl: string;
-    previewUrl: string;
+    thumbnail_url: string;
+    preview_url: string;
     visible: boolean;
-    isTemporary: boolean;
-    stitchCountTier: string;
+    is_temporary: boolean;
+    stitch_count_tier: string;
   }[];
   options: { id: string; value: string }[];
-  mainCategoryId: number;
-  warehouseProductId: number;
-  warehouseProductVariantId: number;
+  main_category_id: number;
+  warehouse_product_id: number;
+  warehouse_product_variant_id: number;
   size: string;
   color: string;
-  availabilityStatus: string;
+  availability_status: string;
 };
+
+export type FilterBy =
+  | "all"
+  | "price"
+  | "variants"
+  | "category"
+  | "availability";
+
+export type SortBy =
+  | "lowestPrice"
+  | "highestPrice"
+  | "alphabeticalAsc"
+  | "alphabeticalDesc";

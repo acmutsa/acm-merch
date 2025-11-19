@@ -52,7 +52,6 @@ export async function getProductInfo(storeProductId: number) {
   return result;
 }
 
-
 export async function getCatalogInfoFromStoreProduct(storeProductId: number) {
   const syncInfo = await getProductInfo(storeProductId);
   const firstVariant = syncInfo.sync_variants?.[0];
@@ -70,5 +69,3 @@ export async function getCatalogInfoFromStoreProduct(storeProductId: number) {
     catalog: catalogInfo,
   };
 }
-
-
