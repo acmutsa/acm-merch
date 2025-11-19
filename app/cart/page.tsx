@@ -35,6 +35,31 @@ export default function Page() {
     loadCart();
   }, []);
 
+  function mapCartItemForCheckout(item: CartItem) {
+    return {
+      printfulProductId: Number(item.printfulProductID),
+      printfulVariantId: Number(item.printfulVariantID),
+      retailPrice: item.price.toFixed(2),
+      name: item.name,
+      size: item.size ?? "Unknown",
+      color: "Navy",
+      quantity: item.quantity
+    };
+  }
+
+  async function handleCheckout() {
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        items: cartItems.map(mapCartItemForCheckout)
+      })
+    });
+
+    const data = await res.json();
+    window.location.href = data.url;
+  }  
+
   async function setQuantity(id: string, size: string | undefined, quantity: number) {
     const res = await fetch("/api/cart", {
       method: "PUT",
@@ -143,7 +168,9 @@ export default function Page() {
         {cartItems.length > 0 && (
           <div className="mt-8 flex items-center justify-between gap-4">
             <p className="text-2xl font-bold">Total: ${total}</p>
-              <button className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 font-semibold transition text-xl">
+              <button className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 font-semibold transition text-xl"
+              onClick={handleCheckout}
+              >
                 Check Out
               </button>
           </div>
