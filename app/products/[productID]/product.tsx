@@ -1,144 +1,168 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
+import { useMemo, useState } from "react";
+import FavoriteButton from "@/components/favorites/FavoriteButton";
+import {
+  resolvePrimaryImage,
+  resolveColours,
+  resolveSizes,
+  resolvePrice,
+} from "@/lib/printful";
 
-type ProductType = {
-  id: string;
-  name: string;
-  price: number;
-  images: string[];
-  sizes: string[];
+type Props = {
+  product: any; // Printful detail object { sync_product, sync_variants, ... }
+  description?: string | null;
 };
 
-export default function Product({ product }: { product: ProductType }) {
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+export default function ProductView({ product, description }: Props) {
+  const title = product?.sync_product?.name ?? "Product";
+  const primaryImage = resolvePrimaryImage(product);
 
-  // Basic placeholder shirt colors
-  const colors = ["Blue", "Black", "White"];
+  // Choices
+  const colours = useMemo(() => resolveColours(product), [product]);
+  const allSizes = useMemo(() => resolveSizes(product), [product]);
 
-  async function handleAddToCart() {
-    const res = await fetch("/api/cart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        size: selectedSize,
-        quantity: 1,
-      }),
-    });
-
-    if(!res.ok) {
-      alert("Failed to add to cart");
-      return;
+  const [color, setColor] = useState<string | null>(colours[0] ?? null);
+  const availableSizesForColor = useMemo(() => {
+    if (!color) return allSizes;
+    const set = new Set<string>();
+    for (const v of product?.sync_variants ?? []) {
+      const vc = String(v?.color ?? v?.product?.color ?? v?.name ?? "").toLowerCase();
+      const vs = String(v?.size ?? v?.product?.size ?? v?.size_name ?? "");
+      if (vc.includes(String(color).toLowerCase())) set.add(vs);
     }
+    return Array.from(set.size ? set : new Set(allSizes));
+  }, [product, color, allSizes]);
 
-    alert("Added to cart!");
-  }
+  const [size, setSize] = useState<string | null>(
+    availableSizesForColor?.[0] ?? null
+  );
+
+  // Price based on selection (falls back to lowest if no selection)
+  const price = useMemo(
+    () => resolvePrice(product, { color: color ?? undefined, size: size ?? undefined }),
+    [product, color, size]
+  );
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 flex flex-col">
-      <main className="max-w-6xl mx-auto w-full flex flex-col md:flex-row items-center md:items-start justify-center gap-16 py-16 px-4 md:px-8">
-        {/* LEFT: PRODUCT IMAGE */}
-        <div className="flex-1 flex justify-center">
-          <div className="w-full max-w-md aspect-square rounded-3xl border-[3px] border-[#266ae8] bg-white flex items-center justify-center shadow-sm">
-            {product.images?.length ? (
-              <Image
-                src={product.images[0]}
-                alt={product.name}
-                width={400}
-                height={400}
-                className="object-contain max-h-full max-w-full"
-              />
-            ) : (
-              <span className="text-slate-400 text-lg font-medium">
-                Product Image
-              </span>
-            )}
-          </div>
+    <main className="mx-auto max-w-6xl px-4 py-8">
+      <div className="grid gap-10 md:grid-cols-2">
+        {/* Image */}
+        <div className="rounded-2xl border border-[#266ae8]/30 p-4 bg-white">
+          {primaryImage ? (
+            <Image
+              src={primaryImage}
+              alt={title}
+              width={1200}
+              height={1200}
+              className="object-contain w-full h-full"
+              priority
+            />
+          ) : (
+            <div className="aspect-square w-full grid place-items-center text-slate-400">
+              No Image
+            </div>
+          )}
         </div>
 
-        {/* RIGHT: DETAILS */}
-        <div className="flex-1 flex flex-col gap-8 max-w-md w-full">
-          {/* Title + Price */}
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-[#266ae8]">
-              {product.name}
+        {/* Right column */}
+        <div className="space-y-6">
+          <div className="flex items-start justify-between gap-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-[#266ae8] leading-tight">
+              {title}
             </h1>
-            <p className="text-xl font-semibold text-slate-800">
-              ${product.price.toFixed(2)}
-            </p>
+
+            <FavoriteButton
+              product={{
+                id: String(product?.sync_product?.id),
+                name: title,
+                image: primaryImage ?? "",
+                price: price ?? 0,
+              }}
+            />
           </div>
 
-          {/* COLOR OPTIONS */}
-          <div className="flex flex-col gap-2">
-            <p className="font-medium text-slate-700">Colours</p>
-            <div className="flex gap-4">
-              {colors.map((color) => (
-                <button
-                  key={color}
-                  onClick={() => setSelectedColor(color)}
-                  className={`h-14 w-20 rounded-xl border-2 flex items-center justify-center text-sm font-medium transition ${
-                    selectedColor === color
-                      ? "border-[#266ae8] text-[#266ae8]"
-                      : "border-slate-300 text-slate-700 hover:border-[#266ae8]"
-                  }`}
-                >
-                  {color}
-                </button>
-              ))}
+          {/* Price */}
+          <div className="text-lg font-semibold">
+            {price != null ? `$${price.toFixed(2)}` : "Price unavailable"}
+          </div>
+
+          {/* Description (subtext under price) */}
+          {description && (
+            <div
+              className="mt-2 text-sm leading-relaxed text-slate-600/90 prose prose-sm max-w-none
+                        [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5
+                        [&_p]:my-1 [&_li]:my-0.5"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
+          )}
+
+          {/* Colours */}
+          {colours.length > 0 && (
+            <div className="space-y-2">
+              <div className="text-sm font-medium">Colours</div>
+              <div className="flex flex-wrap gap-2">
+                {colours.map((c) => {
+                  const active = c === color;
+                  return (
+                    <button
+                      key={c}
+                      type="button"
+                      aria-pressed={active}
+                      onClick={() => setColor(c)}
+                      className={`px-3 h-8 rounded-full border text-sm
+                        ${active ? "bg-[#266ae8] text-white border-[#266ae8]"
+                                 : "border-slate-300 text-slate-700 hover:bg-slate-50"}`}
+                      title={c}
+                    >
+                      {c}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* SIZE OPTIONS */}
-          <div className="flex flex-col gap-2">
-            <p className="font-medium text-slate-700">Sizes</p>
-            <div className="flex items-center gap-3 text-sm font-medium text-slate-700">
-              {product.sizes.map((size, idx) => (
-                <div key={size} className="flex items-center gap-1">
-                  <button
-                    onClick={() => setSelectedSize(size)}
-                    className={`px-1 transition-colors ${
-                      selectedSize === size
-                        ? "text-[#266ae8] border-b-2 border-[#266ae8]"
-                        : "hover:text-[#266ae8]"
-                    }`}
-                  >
-                    {size}
-                  </button>
-                  {idx !== product.sizes.length - 1 && (
-                    <span className="text-slate-300">|</span>
-                  )}
-                </div>
-              ))}
+          {/* Sizes */}
+          {availableSizesForColor.length > 0 && (
+            <div className="space-y-2">
+              <div className="text-sm font-medium">Sizes</div>
+              <div className="flex flex-wrap gap-2">
+                {availableSizesForColor.map((s) => {
+                  const active = s === size;
+                  return (
+                    <button
+                      key={s || "one-size"}
+                      type="button"
+                      aria-pressed={active}
+                      onClick={() => setSize(s)}
+                      className={`px-3 h-8 rounded-full border text-sm
+                        ${active ? "bg-[#266ae8] text-white border-[#266ae8]"
+                                 : "border-slate-300 text-slate-700 hover:bg-slate-50"}`}
+                    >
+                      {s || "One size"}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* ADD TO CART */}
+
+          {/* Add to cart (wire up when you’re ready) */}
           <button
-            disabled={!selectedSize}
-            onClick={handleAddToCart}
-            className={`mt-4 w-full md:w-64 py-3.5 rounded-full text-lg font-semibold shadow-md transition ${
-              selectedSize
-                ? "bg-[#266ae8] text-white hover:bg-[#2057bb]"
-                : "bg-slate-200 text-slate-500 cursor-not-allowed"
-            }`}
+            type="button"
+            disabled={!size}
+            className={`inline-flex items-center justify-center h-11 px-5 rounded-xl font-medium transition
+              ${size ? "bg-[#266ae8] text-white hover:opacity-90"
+                     : "bg-slate-200 text-slate-500 cursor-not-allowed"}`}
+            title={size ? "Add to Cart" : "Select a Size"}
           >
-            {selectedSize === null && selectedColor=== null
-                ? "Select a Size and Colour"
-                : !selectedSize
-                ? "Select a Size"
-                : !selectedColor
-                ? "Select a Colour"
-                : "Add to Cart"}          
-            </button>
+            {size ? "Add to Cart" : "Select a Size"}
+          </button>
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
