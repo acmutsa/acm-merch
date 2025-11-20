@@ -13,12 +13,17 @@ import {
 } from "@/components/ui/navigation-menu";
 import { ShoppingCart, Search } from 'lucide-react';
 import { useSession, signOut } from "@/lib/auth-client";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const { data: session } = useSession();
   const isSignedIn = !!session?.user;
+  const router = useRouter();
 
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/");
+  };
   return (
     <header className="border-b relative z-50">
 
@@ -53,15 +58,9 @@ export default function Navbar() {
                       </NavigationMenuLink>
                       <NavigationMenuLink asChild className="min-w-[160px]">
                         <button
-                          className="w-full text-left px-2 py-1 rounded hover:bg-accent font-semibold"
-                          onClick={() => signOut({
-                            fetchOptions: {
-                              onSuccess: () => {
-                                router.push("/");
-                              },
-                            },
-                          })}
-                        >
+                            className="w-full text-left px-2 py-1 rounded hover:bg-accent font-semibold"
+                            onClick={handleSignOut}
+                          >
                           Sign Out
                         </button>
                         </NavigationMenuLink>

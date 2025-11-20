@@ -26,7 +26,7 @@ export default function SignIn() {
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
 
-  const router = useRouter();
+  
 
   return (
     <Card className="max-w-md">
