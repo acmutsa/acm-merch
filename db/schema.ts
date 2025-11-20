@@ -7,7 +7,6 @@ export const productMappings = sqliteTable("product_mappings",{
     name: text("name").notNull().default("Unknown Product"),
     printfulProductID: text("printful_product_id").notNull(),
     printfulVariantID: text("printful_variant_id").notNull(),
-    
 
     stripeProdID: text("stripe_product_id").notNull(),
     stripePriceID: text("stripe_price_id").notNull(),

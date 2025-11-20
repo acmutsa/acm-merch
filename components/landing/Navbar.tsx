@@ -53,6 +53,9 @@ export default function Navbar() {
                 <NavigationMenuContent className="p-2 min-w-[160px]">
                   {isSignedIn ? (
                     <>
+                    <NavigationMenuLink asChild>
+                        <Link className="font-semibold" href="/favorites">Favorites</Link>
+                      </NavigationMenuLink>
                       <NavigationMenuLink asChild>
                         <Link className="font-semibold" href="/account">View Account</Link>
                       </NavigationMenuLink>

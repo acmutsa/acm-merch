@@ -16,6 +16,7 @@ export default function Page() {
     price: number;
     size?: string;
     quantity: number;
+    image: string;
   };
   
 
@@ -43,7 +44,8 @@ export default function Page() {
       name: item.name,
       size: item.size ?? "Unknown",
       color: "Navy",
-      quantity: item.quantity
+      quantity: item.quantity,
+      image: item.image
     };
   }
 
@@ -116,7 +118,7 @@ export default function Page() {
             >
               <div className="flex items-center gap-4">
                 <img
-                  src="/assets/logo.png"
+                  src={item.image}
                   alt={item.name}
                   className="w-16 h-16 object-contain"
                 />

@@ -11,7 +11,7 @@ export async function GET() {
 }
 
 export async function POST(req:Request) {
-    const body = (await req.json()) as { id: string; productName: string; price: number; size?: string; quantity?: number; };
+    const body = (await req.json()) as { id: string; productName: string; price: number; size?: string; quantity?: number; imageURL:string; };
     const qty = body.quantity ?? 1;
 
     let cart = getCartFromCookie();
@@ -32,10 +32,11 @@ export async function POST(req:Request) {
             printfulVariantID: body.id,
             stripeProdID: body.id,
             stripePriceID: body.id,
-            name: body.name,
+            name: body.productName,
             price: body.price,
             size: body.size,
             quantity: qty,
+            image:body.imageURL,
         };
         cart.push(newItem);
     }

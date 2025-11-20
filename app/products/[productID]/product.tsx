@@ -10,12 +10,33 @@ import {
   resolvePrice,
 } from "@/lib/printful";
 
+
+
 type Props = {
   product: any; // Printful detail object { sync_product, sync_variants, ... }
   description?: string | null;
 };
 
+
+
 export default function ProductView({ product, description }: Props) {
+  async function addToCart() {
+  await fetch("/api/cart", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id: String(product.sync_product.id),
+      printfulProductID:Number(product.product_id),
+      prinfulVariantID:Number(product.variant_id),
+      productName: String(product?.sync_product?.name) ,
+      price: price,
+      size: size,
+      quantity: 1,
+      imageURL: primaryImage
+    })
+  });
+}
+  console.log(product);
   const title = product?.sync_product?.name ?? "Product";
   const primaryImage = resolvePrimaryImage(product);
 
@@ -79,6 +100,7 @@ export default function ProductView({ product, description }: Props) {
                 name: title,
                 image: primaryImage ?? "",
                 price: price ?? 0,
+  
               }}
             />
           </div>
@@ -158,6 +180,7 @@ export default function ProductView({ product, description }: Props) {
               ${size ? "bg-[#266ae8] text-white hover:opacity-90"
                      : "bg-slate-200 text-slate-500 cursor-not-allowed"}`}
             title={size ? "Add to Cart" : "Select a Size"}
+            onClick={addToCart}
           >
             {size ? "Add to Cart" : "Select a Size"}
           </button>

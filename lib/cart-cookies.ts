@@ -1,4 +1,4 @@
-import {cookies} from "next/headers";
+import { cookies } from "next/headers";
 
 const CART_COOKIE = "cart";
 
@@ -12,6 +12,7 @@ export type CartItem = {
     price: number;
     size?: string;
     quantity: number;
+    image?: string
 };
 
 export function getCartFromCookie(): CartItem[] {
