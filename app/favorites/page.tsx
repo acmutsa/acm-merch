@@ -16,7 +16,7 @@ export default function FavoritesPage() {
 
   return (
     <div className="min-h-[60vh] w-full max-w-6xl mx-auto px-6 py-10">
-      <h1 className="text-3xl font-bold text-[#266ae8] mb-6">Favorites</h1>
+      <h1 className="text-3xl text-center font-bold text-[#266ae8] mb-6">Favorites</h1>
 
       {items.length === 0 ? (
         <p className="text-center text-slate-500">You don’t have any favorites yet.</p>
