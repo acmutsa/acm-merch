@@ -47,7 +47,7 @@ export async function getProductsByCategory(category: string): Promise<Product[]
   return (await Promise.all(allProducts.map(async (product) => {
     return (await getProductById(product.id))
   }))).filter(
-      (product) => categoryIds.includes(product.syncVariants[0].main_category_id)
+      (product) => categoryIds.includes(product.sync_variants[0].main_category_id)
     );
 }
 

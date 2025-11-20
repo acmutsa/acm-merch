@@ -3,11 +3,19 @@ const BASE_URL = "https://api.printful.com";
 
 export async function getProducts(search: string): Promise<SyncProduct[]> {
   const params = new URLSearchParams();
-  const response = await fetch(`${BASE_URL}/store/products?${params}`, {
+  let response = null;
+  try {
+    response = await fetch(`${BASE_URL}/store/products?${params}`, {
     headers: {
       Authorization: `Bearer ${process.env.PRINTFUL_API_KEY}`,
     },
   });
+  }
+  catch (error) {
+    console.log(error);
+    throw new Error(`Error fetching products: ${error}`);
+  }
+  
   if (!response.ok) {
     console.log(await response.json());
     throw new Error(`Error fetching products: ${response.statusText}`);
@@ -38,7 +46,7 @@ export async function getProductById(productId: number): Promise<Product> {
   }
   const data = await response.json();
   return {
-    syncProduct: data.result.sync_product as SyncProduct,
-    syncVariants: data.result.sync_variants as SyncVariant[],
+    sync_product: data.result.sync_product as SyncProduct,
+    sync_variants: data.result.sync_variants as SyncVariant[],
   };
 }

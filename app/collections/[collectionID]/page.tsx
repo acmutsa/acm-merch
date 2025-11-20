@@ -1,11 +1,6 @@
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-  } from "@/components/ui/card"
 import { getProductsByCategory } from "@/lib/prinful";
-import Image from "next/image";
+import ProductCard from "@/components/shared/ProductCard";
+import { Product } from "@/lib/types";
 
 export default async function Page({
     params,
@@ -22,15 +17,8 @@ export default async function Page({
       {/* {error && <div className="text-red-500 text-center font-bold">API Error: {error}</div>} */}
 
       <div className="grid gap-6 grid-cols-4 mx-auto max-w-7xl px-4 py-10">
-        {products.map((product) => (
-            <Card key={product.syncProduct.id} className="hover:scale-105 transition-transform duration-200 w-72 h-80 border-[#266ae8]">
-            <CardHeader>
-                <CardTitle className="truncate text-lg" title={product.syncProduct.name}>{product.syncProduct.name}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex items-center justify-center h-48 p-4">
-              <Image src={product.syncProduct.thumbnail_url} alt={product.syncProduct.name} width={200} height={200} className="max-h-full max-w-full object-contain"/>
-            </CardContent>
-            </Card>
+        {products.map((product: Product ) => (
+            <ProductCard key={product.sync_product.id} product={product} />
         ))}
         
         {products.length === 0 && (

@@ -17,9 +17,9 @@ export function filterAndSortProducts(
   } else {
     filteredProducts = products.filter((product) => {
       return (
-        Number(product.syncVariants[0].retail_price.replace("$", "")) <=
+        Number(product.sync_variants[0].retail_price.replace("$", "")) <=
           Number(params.maxPrice) &&
-        Number(product.syncVariants[0].retail_price.replace("$", "")) >=
+        Number(product.sync_variants[0].retail_price.replace("$", "")) >=
           Number(params.minPrice)
       );
     });
@@ -27,24 +27,24 @@ export function filterAndSortProducts(
   let sortedProducts = filteredProducts;
   if (params.sortBy === "alphabeticalAsc") {
     sortedProducts = filteredProducts.sort((a, b) => {
-      return a.syncProduct.name.localeCompare(b.syncProduct.name);
+      return a.sync_product.name.localeCompare(b.sync_product.name);
     });
   } else if (params.sortBy === "alphabeticalDesc") {
     sortedProducts = filteredProducts.sort((a, b) => {
-      return b.syncProduct.name.localeCompare(a.syncProduct.name);
+      return b.sync_product.name.localeCompare(a.sync_product.name);
     });
   } else if (params.sortBy === "lowestPrice") {
     sortedProducts = filteredProducts.sort((a, b) => {
       return (
-        Number(a.syncVariants[0].retail_price.replace("$", "")) -
-        Number(b.syncVariants[0].retail_price.replace("$", ""))
+        Number(a.sync_variants[0].retail_price.replace("$", "")) -
+        Number(b.sync_variants[0].retail_price.replace("$", ""))
       );
     });
   } else if (params.sortBy === "highestPrice") {
     sortedProducts = filteredProducts.sort((a, b) => {
       return (
-        Number(b.syncVariants[0].retail_price.replace("$", "")) -
-        Number(a.syncVariants[0].retail_price.replace("$", ""))
+        Number(b.sync_variants[0].retail_price.replace("$", "")) -
+        Number(a.sync_variants[0].retail_price.replace("$", ""))
       );
     });
   }

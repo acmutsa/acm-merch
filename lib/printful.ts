@@ -1,3 +1,5 @@
+import { Product } from "./types";
+
 // lib/printful.ts
 const API_KEY = process.env.PRINTFUL_API_KEY!;
 const STORE_BASE_URL = "https://api.printful.com/store/products";
@@ -46,9 +48,9 @@ export async function fetchProductById(storeProductId: number) {
 }
 
 // Try to pick the best preview image for a product (list or detail)
-export function resolvePrimaryImage(p: any): string | null {
+export function resolvePrimaryImage(p: Product): string | null {
   // 1) store-level thumbnail (list & detail both have sync_product)
-  const storeThumb = p?.sync_product?.thumbnail_url ?? p?.thumbnail_url;
+  const storeThumb = p?.sync_product?.thumbnail_url;
   if (storeThumb) return storeThumb;
 
   // 2) first variant preview
@@ -59,13 +61,7 @@ export function resolvePrimaryImage(p: any): string | null {
     p?.sync_variants?.[0]?.files?.[0]?.preview_url ??
     null;
 
-  // 3) catalog (rarely needed)
-  const fromCatalog =
-    p?.catalog?.product?.images?.[0] ??
-    p?.catalog?.product?.image ??
-    null;
-
-  return fromVariant ?? fromCatalog ?? null;
+  return fromVariant ?? null;
 }
 
 // Normalize color strings for dedupe/matching
@@ -76,18 +72,14 @@ function normColor(s: unknown): string {
     .toLowerCase();
 }
 
-export function resolveColours(p: any): string[] {
+export function resolveColours(p: Product): string[] {
   const fromVariants =
     p?.sync_variants?.map((v: any) => v?.color ?? v?.product?.color ?? v?.name ?? "") ?? [];
-  const fromCatalog =
-    p?.catalog?.product?.options
-      ?.find((o: any) => o?.title?.toLowerCase() === "color" || o?.id?.toLowerCase?.().includes("color"))
-      ?.values ?? [];
 
   // Dedup by normalized value but keep the pretty original
   const seen = new Set<string>();
   const out: string[] = [];
-  for (const raw of [...fromVariants, ...fromCatalog]) {
+  for (const raw of fromVariants) {
     const pretty = String(raw ?? "").trim();
     const key = normColor(pretty);
     if (key && !seen.has(key)) {

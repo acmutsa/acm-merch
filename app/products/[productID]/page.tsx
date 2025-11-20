@@ -4,12 +4,13 @@ import ProductView from "./product";
 import { fetchProductById, getCatalogProduct } from "@/lib/printful";
 
 type ProductPageProps = {
-  params: { productID: string };
+  params: Promise<{ productID: string }>;
 };
 
 export default async function Page({ params }: ProductPageProps) {
+  const { productID } = await params;
   // 1) Fetch full store product (variants, pricing, files, etc.)
-  const idNum = Number(params.productID);
+  const idNum = Number(productID);
   if (!Number.isFinite(idNum)) return notFound();
 
   const detail = await fetchProductById(idNum).catch(() => null);

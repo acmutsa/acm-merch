@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import { filterAndSortProducts } from "@/lib/utils";
 import type { SearchParams } from "./search-params";
+import { SyncProduct, Product } from "@/lib/types";
 
 export default async function SearchResults({
   params,
@@ -15,7 +16,7 @@ export default async function SearchResults({
   const syncProducts = await getProducts(sortAndFilterParams.search);
 
   const products = await Promise.all(
-    syncProducts.map(async (syncProduct) => {
+    syncProducts.map(async (syncProduct: SyncProduct) => {
       const product = await getProductById(syncProduct.id);
       return product;
     })
@@ -27,14 +28,14 @@ export default async function SearchResults({
   );
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 overflow-y-scroll">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
       {filteredSortedProducts.length === 0 ? (
         <div className="flex justify-center items-center w-full h-full col-span-full">
           <p className="text-gray-500 text-2xl font-bold">No products found</p>
         </div>
       ) : (
-        filteredSortedProducts.map((product) => (
-          <ProductCard key={product.syncProduct.id} product={product} />
+        filteredSortedProducts.map((product: Product) => (
+          <ProductCard key={product.sync_product.id} product={product} />
         ))
       )}
     </div>

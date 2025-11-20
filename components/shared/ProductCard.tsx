@@ -6,37 +6,57 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { getProductById } from "@/lib/queries/products";
-import type { Product, SyncProduct } from "@/lib/types";
+import { resolvePrice, resolvePrimaryImage } from "@/lib/printful";
+import type { Product } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
+import FavoriteButton from "../favorites/FavoriteButton";
 
 export default async function ProductCard({ product }: { product: Product }) {
+  const image = resolvePrimaryImage(product);
+  const title = product?.sync_product?.name ?? "Untitled";
+  const price = resolvePrice(product);
+
   return (
-    <Link
-      href={`/products/${product.syncProduct.id}`}
-      className="hover:scale-105 transition-transform duration-200"
-    >
-      <Card key={product.syncProduct.id} className="border-blue-500 border-2">
-        <CardContent className="relative transition-transform duration-200 hover:scale-105">
-          <Image
-            src={product.syncProduct.thumbnail_url}
-            alt={product.syncProduct.name}
-            width={100}
-            height={100}
-            className="object-contain border-blue-400 mx-auto"
-          />
-        </CardContent>
-        <CardFooter className="block gap-2">
-          <CardTitle className="truncate">{product.syncProduct.name}</CardTitle>
-          <div className="flex items-center justify-between gap-0.5">
-            <p>${product.syncVariants[0].retail_price}</p>
-            <p className="text-sm text-gray-500">
-              {product.syncProduct.variants} options
-            </p>
-          </div>
-        </CardFooter>
-      </Card>
-    </Link>
+            <Link
+              key={product?.sync_product?.id}
+              href={`/products/${product?.sync_product?.id}`}
+              className="block rounded-2xl border border-[#266ae8]/30 hover:shadow-md transition overflow-hidden"
+            >
+              <div className="aspect-square w-full bg-white/40 flex items-center justify-center">
+                {image ? (
+                  <Image
+                    src={image ?? product?.sync_product?.thumbnail_url ?? ""}
+                    alt={title}
+                    width={600}
+                    height={600}
+                    className="object-contain w-full h-full"
+                  />
+                ) : (
+                  <span className="text-slate-400">No Image</span>
+                )}
+              </div>
+
+              <div className="p-4 flex items-start gap-3">
+                <div className="flex-1 min-w-0">
+                  <p className="truncate text-sm font-medium text-slate-900">
+                    {title}
+                  </p>
+                  <p className="text-sm text-slate-700">
+                    {price != null ? `$${price.toFixed(2)}` : "—"}
+                  </p>
+                </div>
+
+                <FavoriteButton
+                  product={{
+                    id: String(product?.sync_product?.id),
+                    name: title,
+                    image: image ?? "",
+                    price: price ?? 0,
+                  }}
+                  label="Favorite"
+                />
+              </div>
+            </Link>
   );
 }

@@ -8,8 +8,8 @@ export type SyncProduct = {
 };
 
 export type Product = {
-  syncProduct: SyncProduct;
-  syncVariants: SyncVariant[];
+  sync_product: SyncProduct;
+  sync_variants: SyncVariant[];
 };
 
 export type SyncVariant = {
