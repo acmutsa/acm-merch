@@ -51,12 +51,15 @@ async function updateProfile(formData: FormData) {
 export default async function Page() {
   const session = await auth.api.getSession({ headers: await headers() });
   const email = session?.user?.email ?? null;
+  
 
   const rows = email
     ? await db.select().from(user).where(eq(user.email, email))
     : [];
 
   const account = rows[0] ?? null;
+
+  const profileImage = account?.image?.trim() || "/assets/logo.png";
 
   return (
     <section className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-10 sm:px-6 lg:px-0">
@@ -80,7 +83,7 @@ export default async function Page() {
             <input type="hidden" name="userId" value={account?.id ?? ""} />
 
             <div className="flex flex-col items-center gap-4 sm:flex-row">
-              <ProfileImagePicker currentImage={account?.image ?? "/assets/logo.png"} />
+              <ProfileImagePicker currentImage={profileImage} />
               <p className="text-center text-sm text-muted-foreground sm:text-left">
                 Click your avatar to upload a new photo. PNG or JPG up to 5MB.
               </p>
