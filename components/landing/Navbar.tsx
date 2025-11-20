@@ -11,7 +11,7 @@ import {
   NavigationMenuContent,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { ShoppingCart, Search } from 'lucide-react';
+import { ShoppingCart, Search, CircleUserRoundIcon } from 'lucide-react';
 import { useSession, signOut } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
@@ -49,7 +49,13 @@ export default function Navbar() {
                 <Link className="font-semibold" href="/collections">Collections</Link>
               </NavigationMenuLink> 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="font-semibold" >Profile</NavigationMenuTrigger>
+                <NavigationMenuTrigger className="font-semibold" >
+                  {isSignedIn && session.user.image ? (
+                    <div className="w-6 h-6 rounded-full overflow-clip"><Image className="object-cover" src={session.user.image} alt={session.user.name} width={40} height={40}/></div>
+                    
+                    ):(
+                    <CircleUserRoundIcon className="w-6 h-6" />
+                    )}</NavigationMenuTrigger>
                 <NavigationMenuContent className="p-2 min-w-[160px]">
                   {isSignedIn ? (
                     <>

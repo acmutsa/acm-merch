@@ -19,13 +19,13 @@ export function ProfileImagePicker({ currentImage }: { currentImage: string }) {
       <button
         type="button"
         onClick={() => fileInputRef.current?.click()}
-        className="rounded-full"
+        className="rounded-full overflow-clip w-20 h-20"
       >
         <Image
           src={preview ?? currentImage ?? "/assets/logo.png"}
           alt="Profile image"
-          width={120}
-          height={120}
+          width={80}
+          height={80}
           className="rounded-full object-cover"
         />
       </button>

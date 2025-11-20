@@ -44,9 +44,7 @@ async function updateProfile(formData: FormData) {
 
   revalidatePath("/account");
   redirect("/");
-}
-
-
+  }
 
 export default async function Page() {
   const session = await auth.api.getSession({ headers: await headers() });

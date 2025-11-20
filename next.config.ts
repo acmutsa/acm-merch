@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "cdn.printful.com" },
     ],
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "5mb",
+    },
+  },
 };
 
 export default nextConfig;
