@@ -59,6 +59,11 @@ export default function Navbar() {
                       <NavigationMenuLink asChild>
                         <Link className="font-semibold" href="/account">View Account</Link>
                       </NavigationMenuLink>
+                      <NavigationMenuLink asChild>
+                        <Link className="font-semibold" href="/account/settings">
+                          Account Settings
+                        </Link>
+                      </NavigationMenuLink>
                       <NavigationMenuLink asChild className="min-w-[160px]">
                         <button
                             className="w-full text-left px-2 py-1 rounded hover:bg-accent font-semibold"
