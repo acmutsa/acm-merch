@@ -41,22 +41,22 @@ export default async function Page() {
         <div className="flex flex-row items-center justify-center gap-12 py-10">
           {hats.map((p) => (
             <Card
-              key={p.syncProduct.id}
+              key={p.sync_product.id}
               className="hover:scale-105 transition-transform duration-200 w-72 h-80 border-[#266ae8]"
             >
               <Link
-                href={`/products/${p.syncProduct.id}`}
+                href={`/products/${p.sync_product.id}`}
                 className="flex flex-col h-full"
               >
                 <CardHeader>
                   <CardTitle className="truncate">
-                    {p.syncProduct.name}
+                    {p.sync_product.name}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1 flex items-center justify-center">
                   <Image
-                    src={p.syncProduct.thumbnail_url}
-                    alt={p.syncProduct.name}
+                    src={p.sync_product.thumbnail_url}
+                    alt={p.sync_product.name}
                     width={200}
                     height={200}
                     className="max-h-full max-w-full object-contain"
@@ -77,22 +77,22 @@ export default async function Page() {
         <div className="flex flex-row items-center justify-center gap-12 py-10">
           {apparel.map((p) => (
             <Card
-              key={p.syncProduct.id}
+              key={p.sync_product.id}
               className="hover:scale-105 transition-transform duration-200 w-72 h-80 border-[#266ae8]"
             >
               <Link
-                href={`/products/${p.syncProduct.id}`}
+                href={`/products/${p.sync_product.id}`}
                 className="flex flex-col h-full"
               >
                 <CardHeader>
                   <CardTitle className="truncate">
-                    {p.syncProduct.name}
+                    {p.sync_product.name}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1 flex items-center justify-center">
                   <Image
-                    src={p.syncProduct.thumbnail_url}
-                    alt={p.syncProduct.name}
+                    src={p.sync_product.thumbnail_url}
+                    alt={p.sync_product.name}
                     width={200}
                     height={200}
                     className="max-h-full max-w-full object-contain"
