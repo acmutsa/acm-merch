@@ -26,6 +26,8 @@ export default function SignIn() {
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
 
+  const router = useRouter();
+
   return (
     <Card className="max-w-md">
       <CardHeader>
@@ -89,6 +91,9 @@ export default function SignIn() {
                   password,
                 },
                 {
+                  onSuccess: () => {
+                    router.push("/");
+                  },
                   onRequest: (ctx) => {
                     setLoading(true);
                   },
