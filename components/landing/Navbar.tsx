@@ -15,9 +15,9 @@ import { ShoppingCart, Search } from 'lucide-react';
 import { useSession, signOut } from "@/lib/auth-client";
 
 export default function Navbar() {
-
   const { data: session, isPending } = useSession();
   const isSignedIn = !!session?.user;
+
   return (
     <header className="border-b relative z-50">
 
@@ -31,7 +31,7 @@ export default function Navbar() {
           />
         </Link>
 
-        <NavigationMenu viewport ={false}>
+        <NavigationMenu viewport={false}>
           <NavigationMenuList className="flex gap-2">
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link className="font-semibold" href="/collections/apparel">Apparel</Link>

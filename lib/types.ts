@@ -69,3 +69,38 @@ export type SortBy =
   | "highestPrice"
   | "alphabeticalAsc"
   | "alphabeticalDesc";
+
+export type CartItem = {
+  id: string;
+  name: string;
+  productName?: string;
+  price: number;
+  size?: string;
+  quantity: number;
+  imageUrl?: string;
+  printfulProductId: string;
+  printfulVariantId: string;
+  stripePriceID?: string;
+};
+
+export type ProductDetail = {
+  id: string;                 // store product id (sync_product.id)
+  name: string;
+  price: number;
+  images: string[];
+  sizes: string[];
+  colours: string[];
+  description: string;
+  printfulProductId: string;  // catalog product id
+  printfulVariantId: string;  // default variant id
+};
+
+export type FavoriteProduct = {
+  id: string;       // stable key (use Printful product id as string)
+  name: string;
+  image: string;    // primary image url
+  price: number;    // numeric price used across UI
+};
+
+
+
