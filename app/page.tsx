@@ -8,7 +8,7 @@ export default async function Home() {
   });
   return (
     <>
-      <Hero params={{ text: "Welcome To The ACM Merch Store" ,image:"/assets/globe.jpeg"}} />
+      <Hero />
       <div className="flex flex-col  justify-center gap-12 p-12">
         <CollectionContainer
             title="RowdyHacks"

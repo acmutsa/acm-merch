@@ -1,19 +1,22 @@
-interface heroPageProps {
-  params: {
-    text: string,
-    image:string,
-  };
-}
+"use client";
 
-export default function Hero({ params }: heroPageProps) {
+import { useEffect } from "react";
+import { Gradient } from "@/components/shared/gradient.js";
+
+export default function Hero() {
+  useEffect(() => {
+    const gradient = new Gradient();
+    // @ts-ignore lol
+    gradient.initGradient("#gradient-canvas");
+  }, []);
+
   return (
-    <div className="w-full flex justify-center">
-      <div className="bg-blue-500 h-[50vh] w-full flex items-center justify-center"
-      style={{
-        backgroundImage: `url(${params.image})`,
-      }}>
-        <h1 className="text-white text-5xl font-bold">
-         {params.text}
+    <div className="relative w-full h-[50vh] overflow-hidden">
+        <canvas className="absolute inset-0 w-full h-full " id="gradient-canvas" data-transition-in />
+        <div className="relative z-10 flex h-full w-full items-center justify-center">
+        <h1 className="text-white text-5xl font-bold font-geistmono text-center leading-tight">
+          <span className="block">ACM UTSA</span>
+          <span className="block">Merch</span>
         </h1>
       </div>
     </div>
