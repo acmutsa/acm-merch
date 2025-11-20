@@ -24,6 +24,7 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const router = useRouter();
 
   const router = useRouter();
 
@@ -101,6 +102,7 @@ export default function SignIn() {
                   },
                 }
               );
+              router.push("/"); 
             }}
           >
             {loading ? (
