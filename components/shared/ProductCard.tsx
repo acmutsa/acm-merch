@@ -21,9 +21,9 @@ export default async function ProductCard({ product }: { product: Product }) {
             <Link
               key={product?.sync_product?.id}
               href={`/products/${product?.sync_product?.id}`}
-              className="block rounded-2xl border border-[#266ae8]/30 hover:shadow-md transition overflow-hidden"
+              className="block rounded-2xl border border-[#266ae8]/50 hover:shadow-md transition-shadow"
             >
-              <div className="aspect-square w-full bg-white/40 flex items-center justify-center">
+              <div className="aspect-square w-full rounded-t-2xl bg-white/40 flex items-center justify-center overflow-clip">
                 {image ? (
                   <Image
                     src={image ?? product?.sync_product?.thumbnail_url ?? ""}

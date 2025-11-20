@@ -19,9 +19,9 @@ async function updateProfile(formData: FormData) {
   const userId = formData.get("userId")?.toString().trim() ?? "";
   const imageEntry = formData.get("image");
 
-  if (!name || !email) {
-    return { error: "Both fields required" };
-  }
+  // if (!name || !email) {
+  //   return { error: "Both fields required" };
+  // }
 
   let imageUrl: string | undefined;
 

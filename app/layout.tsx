@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <NuqsAdapter>
           <FavoritesProvider>
             <Navbar />
-            <main className="flex-1">{children}</main>
+            <main className="">{children}</main>
             <Footer />
           </FavoritesProvider>
         </NuqsAdapter>
