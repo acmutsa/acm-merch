@@ -36,14 +36,8 @@ export default async function Page() {
 
       {/* Apparel Section */}
       <div>
-        <h2 className="p-3 text-3xl font-bold text-center">
-          <Link
-            href="/collections/apparel"
-            className="block text-[#266ae8] hover:underline underline-offset-4 transition-colors"
-          >
-            Hats
-          </Link>
-        </h2>
+        <h2 className="p-3 text-3xl font-bold text-center text-[#266ae8]">Hats</h2>
+
         <div className="flex flex-row items-center justify-center gap-12 py-10">
           {hats.map((p) => (
             <Card
@@ -78,15 +72,7 @@ export default async function Page() {
 
       {/* Accessories Section */}
       <div>
-        <h2 className="p-3 text-3xl font-bold text-center">
-          <Link
-            href="/collections/apparel"
-            className="block text-[#266ae8] hover:underline underline-offset-4 transition-colors"
-          >
-            Apparel
-          </Link>
-        
-        </h2>
+        <h2 className="p-3 text-3xl font-bold text-center text-[#266ae8]">Apparel</h2>
 
         <div className="flex flex-row items-center justify-center gap-12 py-10">
           {apparel.map((p) => (
