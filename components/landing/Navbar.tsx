@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { ShoppingCart, Search } from 'lucide-react';
 import { useSession, signOut } from "@/lib/auth-client";
+import router from "next/router";
 
 export default function Navbar() {
   const { data: session, isPending } = useSession();
@@ -52,7 +53,13 @@ export default function Navbar() {
                       <NavigationMenuLink asChild className="min-w-[160px]">
                         <button
                           className="w-full text-left px-2 py-1 rounded hover:bg-accent font-semibold"
-                          onClick={() => signOut()}
+                          onClick={() => signOut({
+                            fetchOptions: {
+                              onSuccess: () => {
+                                router.push("/");
+                              },
+                            },
+                          })}
                         >
                           Sign Out
                         </button>
@@ -71,12 +78,12 @@ export default function Navbar() {
                 </NavigationMenuContent>
               </NavigationMenuItem>
           </NavigationMenuList>
-           <NavigationMenuList>
-                <Link href="/cart"><ShoppingCart/> </Link>
-                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link className="font-semibold" href="/explore"><Search/></Link>
-              </NavigationMenuLink>
-              </NavigationMenuList>
+          <NavigationMenuList className="flex gap-2">
+            <Link href="/cart"><ShoppingCart/></Link>
+            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+              <Link className="font-semibold" href="/explore"><Search/></Link>
+            </NavigationMenuLink>
+          </NavigationMenuList>
         </NavigationMenu>
       </div>
     </header>
