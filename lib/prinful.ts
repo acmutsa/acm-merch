@@ -50,12 +50,7 @@ export async function getProductsByCategory(category: string): Promise<Product[]
   return (await Promise.all(allProducts.map(async (product) => {
     return (await getProductById(product.id))
   }))).filter(
-      (product) => {if (categoryIds.includes(product.syncVariants[0].main_category_id)) {
-        console.log(product.syncVariants[0].main_category_id);
-        return true;
-      } else {
-        return false;
-      }}
+      (product) => categoryIds.includes(product.syncVariants[0].main_category_id)
     );
 }
 
