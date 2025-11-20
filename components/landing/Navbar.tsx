@@ -16,7 +16,7 @@ import { useSession, signOut } from "@/lib/auth-client";
 import router from "next/router";
 
 export default function Navbar() {
-  const { data: session, isPending } = useSession();
+  const { data: session } = useSession();
   const isSignedIn = !!session?.user;
   return (
     <header className="border-b relative z-50">
