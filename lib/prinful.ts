@@ -1,6 +1,6 @@
+import { COLLECTION_CATEGORY_IDS } from "./category";
 import { getProductById } from "./queries/products";
 import { Product } from "./types";
-
 // lib/printful.ts
 const API_KEY = process.env.PRINTFUL_API_KEY!;
 const STORE_BASE_URL = "https://api.printful.com/store/products";
@@ -18,10 +18,7 @@ export interface PrintfulProduct {
   main_category_id?: number;
 }
 
-const COLLECTION_CATEGORY_IDS: Record<string, number[]> = {
-  stickers: [202],
-  hats: [15, 42, 93],
-};
+
 
 export async function getProducts(): Promise<PrintfulProduct[]> {
   const res = await fetch(STORE_BASE_URL, {
@@ -42,7 +39,7 @@ export async function getProductsByCategory(category: string): Promise<Product[]
   const categoryIds = COLLECTION_CATEGORY_IDS[category.toLowerCase()];
 
   if (!categoryIds) {
-    console.error(`No category ID found for collection: ${category}`);
+    console.warn(`No category ID found for collection: ${category}`);
     return [];
   }
 
