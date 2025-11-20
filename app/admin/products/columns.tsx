@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Checkbox } from "@/components/ui/checkbox"
+import {toast} from "sonner"
 
 // This type is based on what we see in the current usage. 
 // We can refine this as we know more about the Printful API response.
@@ -90,13 +91,12 @@ export const columns: ColumnDef<Product>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(product.id.toString())}
+              onClick={async () => {
+                await navigator.clipboard.writeText(product.id.toString());
+                toast.success("Product ID copied to clipboard")}}
             >
-              Copy payment ID
+              Copy product ID
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

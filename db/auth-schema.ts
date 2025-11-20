@@ -1,6 +1,5 @@
 import { sql } from "drizzle-orm";
 import { blob, sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
-import type { CartItem } from "@/lib/types";
 
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
@@ -16,10 +15,6 @@ export const user = sqliteTable("user", {
   updatedAt: integer("updated_at", { mode: "timestamp_ms" })
     .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
     .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
-  cart: blob("cart", { mode: "json" })
-    .$type<CartItem[]>()
-    .default(sql`'[]'`)
     .notNull(),
 });
 
